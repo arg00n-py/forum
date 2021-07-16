@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+    Forum Homepage
+{% endblock title %}
+    
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}</p>
+    {% else %}
+        <p>Hello, Unknown</p>
+        <p><a href="{% url "account:login" %}">Login</a> to post and comment on posts.</p>
+    {% endif %}
+
+    <h1>Welcome to this Forum</h1>
+    
+{% endblock content %}
+    

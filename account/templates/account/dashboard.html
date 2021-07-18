@@ -10,7 +10,11 @@
 
 {% block content %}
     <h1>Welcome, {{ request.user.username }}</h1>
+    <p>Your bio: {{ request.user.userprofile.bio }}</p>
+    <p>Your date of birth: {{ request.user.userprofile.date_of_birth }}</p>
     <p><a href="{% url 'account:logout' %}">Logout</a></p>
+    <p><a href="{% url 'account:edit_profile' %}">Edit profile</a></p>
+    <p><a href="{% url 'account:password_change' %}">Change Password</a></p>
     <p>Go to <a href="{% url 'account:homepage' %}">Homepage</a></p>
 {% endblock content %}
     

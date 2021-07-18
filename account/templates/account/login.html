@@ -10,6 +10,9 @@
         {{ form.as_p }}
         {% csrf_token %}
         <p><input type="submit" value="login"></p>
+        <input type="hidden" name="next" value="{{ next }}" />
     </form>
+
+    <p>Don't have an account? <a href="{% url 'account:signup' %}">Sign up</a></p>
 {% endblock content %}
     

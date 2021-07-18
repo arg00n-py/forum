@@ -11,9 +11,11 @@
 {% block content %}
     {% if user.is_authenticated %}
         <p>Hello, {{ user.username }}</p>
+        <p><a href="{% url 'account:dashboard' %}">Dashboard</a></p>
     {% else %}
         <p>Hello, Unknown</p>
         <p><a href="{% url "account:login" %}">Login</a> to post and comment on posts.</p>
+        <p>Or <a href="{% url 'account:signup' %}">Signup</a></p>
     {% endif %}
 
     <h1>Welcome to this Forum</h1>

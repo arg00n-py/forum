@@ -1,2 +1,4 @@
 #TODO:
     -Move 'homepage' url and view to board app
+    -Put all account settings in 'settings' veiw
+    -Make a 'Reset Password' view

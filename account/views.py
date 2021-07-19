@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.http import HttpResponse
-# from django.http.response import HttpResponseRedirect
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -37,12 +37,17 @@ def user_login(request):
 
                 if user.is_active:
                     login(request, user)
+                    messages.success(request, "Login Successful")
                     return redirect("account:dashboard")
                 else:
-                    return HttpResponse("User Disabled")
+                    # return HttpResponse("User Disabled")
+                    messages.error(request, "Account has been disabled.")
+                    return redirect("acccount:login")
 
             else:
-                return HttpResponse("Invalid login details")
+                # return HttpResponse("Invalid login details")
+                messages.error(request, "Invalid login credentials.")
+                return redirect('account:login')
 
     else:
         form = UserLoginForm()
@@ -53,6 +58,7 @@ def user_login(request):
 def user_logout(request):
     # user logout
     logout(request)
+    messages.info(request, "You have been logged out")
     return redirect("account:login")
 
 
@@ -79,6 +85,8 @@ def user_signup(request):
 
             login(request, user)
 
+            messages.success(request, "Account has been created successfully")
+
             return redirect("account:dashboard")
 
     else:
@@ -101,6 +109,8 @@ def edit_profile(request):
         if form.is_valid():
 
             form.save()
+
+            messages.success(request, "Your Profile has been updated.")
 
             return redirect("account:dashboard")
     else:
@@ -125,14 +135,19 @@ def password_change(request):
                 user.set_password(password2)
                 user.save()
 
-                n_user = authenticate(username=request.user.username, password=password2)
+                n_user = authenticate(
+                    username=request.user.username, password=password2)
 
                 login(request, n_user)
 
+                messages.success(request, "Password updated successfully")
+
                 return redirect('account:dashboard')
-                
+
             else:
-                return HttpResponse('Passwords don\'t match')
+                # return HttpResponse('Passwords don\'t match')
+                messages.error(request, "Passwords do not match")
+                return redirect('account:password_change')
 
     else:
         form = PasswordChangeForm()

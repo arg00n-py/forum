@@ -11,11 +11,6 @@ from .forms import UserRegistrationForm, UserProfileEditForm, UserLoginForm,\
 from .models import UserProfile
 
 
-def homepage(request):
-    # homepage for anonymous users
-    return render(request, "board/homepage.html")
-
-
 @login_required()
 def dashboard(request):
     # user dashboard

@@ -1,5 +1,4 @@
 #TODO:
-    -Move 'homepage' url and view to board app
     -Put all account settings in 'settings' veiw
-    -Make a 'Reset Password' view
-    -Add messages
+    -Make a 'Reset Password' view in account
+    -Add 'admin' automatically in 'add_category' view

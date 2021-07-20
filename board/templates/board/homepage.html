@@ -19,6 +19,39 @@
     {% endif %}
 
     <h1>Welcome to this Forum</h1>
+
+    {% if user.is_authenticated %}
+        <p><a href="{% url 'board:add_post' %}">Add Post</a></p>
+        {% if user.userprofile.is_admin %}
+            <p><a href="{% url 'board:add_category' %}">Add Category</a></p>
+        {% endif %}
+    {% endif %}
+
+    <h2>
+        <a href="{% url 'board:category_list' %}">
+            Categories
+        </a>
+    </h2>
     
+    {% for category in categories %}
+        | <a href="{{ category.get_absolute_url }}">{{ category.title }}</a> |
+    {% endfor %}
+
+    <h2>Latest Posts</h2>
+
+    <ul>
+        {% for post in latest_posts %}
+            <li>
+                <a href="{{ post.get_absolute_url }}">
+                    {{ post.title }} 
+                </a>
+                | {{ post.date_created.date }} | 
+                <a href="{{ post.category.get_absolute_url }}">
+                    {{ post.category }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
 {% endblock content %}
     

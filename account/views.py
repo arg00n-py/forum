@@ -33,7 +33,7 @@ def user_login(request):
                 if user.is_active:
                     login(request, user)
                     messages.success(request, "Login Successful")
-                    return redirect("account:dashboard")
+                    return redirect("homepage")
                 else:
                     # return HttpResponse("User Disabled")
                     messages.error(request, "Account has been disabled.")

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    {{ category.title|title }}
+{% endblock title %}
+
+
+{% block content %}
+    <h1>
+        {{ category.title|title }}
+    </h1>
+
+    <p>description: {{ category.description }}</p>
+
+    <p>
+        admins:
+            {% for admin in category.admin.all %}
+                {% if not forloop.last %}
+                    {{ admin.user.username }},
+                {% else %}
+                    {{ admin.user.username }}.
+                {% endif %}
+            {% endfor %}
+    </p>
+
+    <h3>Posts</h3>
+
+    <ul>
+        {% for post in category.post_set.all %}
+            <li>
+                <p>
+                    <a href="{{ post.get_absolute_url }}">
+                        {{ post.title}}
+                    </a> ||
+                    {{ post.date_created.date}} ||
+                    by {{ post.user.username }}
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

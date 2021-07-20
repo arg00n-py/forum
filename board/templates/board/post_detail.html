@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    {{ post.title|title }}
+{% endblock title %}
+
+
+{% block content %}
+    <h1>{{ post.title|title }}</h1>
+
+    <p>By: {{ post.user.username }}</p>
+    <p>{{ post.date_created }}</p>
+    <p>
+        {{ post.content }}
+        {% lorem 3 p random %}
+    </p>
+    <hr>
+
+    <h3>{{ comments.count }} Comment{{ comments.count|pluralize }}</h3>
+    <hr>
+    {% if comments %}
+        {% for comment in comments %}
+            {% if comment.post.id == post.id %}
+                <p>{{ comment.user.username }} | {{ comment.date_created }}</p>
+                <p>{{ comment.body }}</p>
+                <hr>
+
+                {% for reply in comment.replies.all %}
+                    <p>{{ reply.user.username }} | {{ reply.date_created }}</p>
+                    <p>{{ reply.body }}</p>
+                {% endfor %}
+
+                <h5>Reply</h5>
+                <form method="post">
+                    {{ comment_form.as_p }}
+                    {% csrf_token %}
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <input type="submit" value="Reply">
+                </form>
+                <hr>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {% comment %} <p>Be the first to comment.</p> {% endcomment %}
+    {% endif %}
+
+    {% if request.user.is_authenticated %}
+        <form method="post">
+            {{ comment_form.as_p }}
+            {% csrf_token %}
+            <input type="submit" value="Comment">
+        </form>
+    {% else %}
+        <p>
+            You have to 
+            <a href="{% url 'account:login' %}">Login</a>
+            to comment.
+            <input type="hidden" name="next" value="{{ next }}">
+        </p>
+    {% endif %}
+{% endblock content %}

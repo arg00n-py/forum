@@ -1,20 +1,52 @@
 {% extends 'base.html' %}
 
-
+{% load static %}
 
 {% block title %}
     Sing Up
 {% endblock title %}
 
 
+{% block styles %}
+	<link rel="stylesheet" href="{% static 'css/loginstyle.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+	{% endblock styles %}
+
 
 {% block content %}
-    <h1>Use the following form to register</h1>
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <input type="submit" value="Sign Up">
-    </form>
-    <p>Already have an account? <a href="{% url 'account:login' %}">Log in</a></p>
+<div class="modal-wrap">
+
+  	<div class="modal-bodies">
+    	<div class="modal-body modal-body-step-1 is-showing">
+
+	      	<div class="title">Sign Up</div>
+	      	<div class="description">Use the following form to register</div>
+
+	      	<form method="post">
+	      		{{ form.as_p }}
+	      		{% csrf_token %}
+
+		        <div class="text-center">
+					<input type="hidden" name="next" value="{{ next }}">
+		          	<input class="button" type="submit" name="Sign Up">
+		        </div>
+
+	      	</form>
+	      	<br>
+	        <p class="text-center">
+	        	Already have an account? <a href="{% url 'account:login' %}">Log in</a>
+	        </p>
+
+    	</div>
+  	</div>
+</div>
+
+
+{% block scripts %}
+	
+{% endblock scripts %}
+
+
 {% endblock content %}
     

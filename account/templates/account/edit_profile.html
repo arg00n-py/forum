@@ -1,20 +1,42 @@
 {% extends 'base.html' %}
 
-
+{% load static %}
 
 {% block titlt %}
     Edit Profile
 {% endblock titlt %}
     
+{% block styles %}
+<link href="{% static "css/bootstrap.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css">
+<link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
 
+<link rel="stylesheet" href="{% static 'css/loginstyle.css' %}">
+{% endblock styles %}
 
 {% block content %}
-    <h1>User the following form to edit your profile</h1>
+<div class="modal-wrap">
 
-    <form method="post">
+  <div class="modal-bodies">
+    <div class="modal-body modal-body-step-1 is-showing">
+      <div class="title">Edit Profile</div>
+      <div class="description">Use the following form to edit your profile</div>
+      <form method="post">
         {{ form.as_p }}
         {% csrf_token %}
-        <input type="submit" value="Edit">
-    </form>
+        <div class="text-center">
+        	<input class="button" type="submit" value="Edit Profile">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% block scripts %}
+	
+{% endblock scripts %}
+
 {% endblock content %}
     

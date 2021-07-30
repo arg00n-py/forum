@@ -1,0 +1,22 @@
+{% load custom_tags %}
+
+<aside class="col-md-3 sidebar97239">
+
+    <div class="status-part3821">
+        <h4>Forum Stats</h4> 
+        {% forum_stats %}
+    </div>
+    
+    <!--              login part-->
+    {% comment %} <div class="login-part2389">
+        <h4>Login</h4>
+        {% conditional_login_form request %}
+    </div> {% endcomment %}
+    
+    <!--        start recent post  -->
+    <div class="recent-post3290">
+        <h4>Recent Post</h4>
+        {% recent_posts %}
+    </div>
+    <!--       end recent post    -->
+</aside>

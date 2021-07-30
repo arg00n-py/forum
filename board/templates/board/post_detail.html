@@ -1,62 +1,196 @@
 {% extends 'base.html' %}
 
+{% load static %}
 
 {% block title %}
-    {{ post.title|title }}
+{{ post.title|title }} | {{ post.category.title }}
 {% endblock title %}
 
 
+{% block styles %}
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/normalize.css" %}">
+    <link rel="stylesheet" href="{% static "css/loginstyle.css" %}">
+{% endblock styles %}
+
+
 {% block content %}
-    <h1>{{ post.title|title }}</h1>
 
-    <p>By: {{ post.user.username }}</p>
-    <p>{{ post.date_created }}</p>
-    <p>
-        {{ post.content }}
-        {% lorem 3 p random %}
-    </p>
-    <hr>
+<section class="main-content920">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="post-details">
+                    <div class="details-header923">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="post-title-left129">
+                                    <h3>{{ post.title|title }}</h3>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="post-details-info1982">
+                        <p>
+                            {{ post.content|linebreaks|safe }}
+                            {% lorem 1 p random %}
+                        </p>
+                        <hr>
+                        <div class="post-footer29032">
+                            <div class="l-side2023">
 
-    <h3>{{ comments.count }} Comment{{ comments.count|pluralize }}</h3>
-    <hr>
-    {% if comments %}
-        {% for comment in comments %}
-            {% if comment.post.id == post.id %}
-                <p>{{ comment.user.username }} | {{ comment.date_created }}</p>
-                <p>{{ comment.body }}</p>
+                                <i class="fa fa-user-o">
+                                    {{ post.user.username}}
+                                </i>
+
+                                <a href="{{ post.category.get_absolute_url }}">
+                                    <i class="fa fa-folder folder2" aria-hidden="true">{{ post.category }}</i>
+                                </a>
+
+                                <i class="fa fa-calendar-o" aria-hidden="true"> {{ post.date_edited }} </i>
+
+                                <a href="#">
+                                    <i class="fa fa-heart-o" aria-hidden="true"> </i>
+                                </a> 
+
+                                <a href="#">
+                                    <i class="fa fa-comments-o " aria-hidden="true"> {{ comments.count }} Comment{{ comments.count|pluralize }}</i>
+                                </a> 
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+               
+                
+                <div class="comment-list12993">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="comments-container">
+                                {% if comments %}
+                                    <ul id="comments-list" class="comments-list">
+                                        {% for comment in comments %}
+                                            {% if comment.post.id == post.id %}
+                                                <li>
+                                                    <div class="comment-main-level">
+                                                        <!-- Contenedor del Comentario -->
+                                                        <div class="comment-box">
+                                                            <div class="comment-head">
+
+                                                                <h6 class="comment-name">
+                                                                    {{ comment.user.username }}    
+                                                                </h6>
+
+                                                                <span>
+                                                                    <i class="fa fa-calendar-o" aria-hidden="true">
+                                                                        {{ comment.date_created }}
+                                                                    </i>
+                                                                </span>
+
+                                                            </div>
+                                                            
+                                                            <div class="comment-content">
+                                                                {{ comment.body }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    {% for reply in comment.replies.all %}
+                                                        <ul class="comments-list reply-list">
+                                                            <li>
+                                                                <div class="comment-box">
+                                                                    <div class="comment-head">
+                                                                        <h6 class="comment-name">
+                                                                            {{ reply.user.username }}
+                                                                        </h6>
+                                                                        <span>
+                                                                            <i class="fa fa-clock-o" aria-hidden="true"> 
+                                                                                {{ reply.date_edited }}
+                                                                            </i>
+                                                                        </span> 
+                                                                    </div>
+                                                                    <div class="comment-content"> 
+                                                                        {{ reply.body }}
+                                                                    </div>
+                                                                </div>
+                                                            </li>  
+                                                        </ul>
+                                                    {% endfor %}
+
+                                                    {% if request.user.is_authenticated %}
+                                                        <div class="comment289-box">
+                                                            
+                                                            <div class="row">
+                                                                <div class="col-md-5 reply-list">
+                                                                    <form method="post">
+                                                                        <div class="post9320-box">
+                                                                            <label style="display: none;">
+                                                                                {{ comment_form.body.label }}
+                                                                            </label>
+                                                                            <span class="reply-box">
+                                                                                Reply: {{ comment_form.body }}
+                                                                            </span>
+                                                                        </div>
+                                                                        {% csrf_token %}
+                                                                        <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                                                        <input type="submit" class="btn btn-default" value="Reply">
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% else %}
+                                                        <span class="reply-list">
+                                                            <a href="{% url 'account:login' %}?next={{ request.path }}">Login</a> to reply.
+                                                        </span>
+                                                    {% endif %}
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}  
+                                    </ul>
+                                {% else %}
+                                    <p>Be the first to comment</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% if request.user.is_authenticated %}
+                    <div class="comment289-box">
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form method="post">
+                                    <div class="post9320-box">
+                                        <label style="display: none;">
+                                            {{ comment_form.body.label }}
+                                        </label>
+                                            Comment: {{ comment_form.body }}
+                                    </div>
+                                    {% csrf_token %}
+                                    <input type="submit" class="btn btn-default" value="Comment">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
                 <hr>
+                    <p>
+                        <a href="{% url 'account:login' %}?next={{ request.path }}">Login</a> to comment.
+                    </p>
+                {% endif %}
+            </div>
+            {% include 'side_bar.html' %}
+        </div>
+    </div>
+</section>
 
-                {% for reply in comment.replies.all %}
-                    <p>{{ reply.user.username }} | {{ reply.date_created }}</p>
-                    <p>{{ reply.body }}</p>
-                {% endfor %}
-
-                <h5>Reply</h5>
-                <form method="post">
-                    {{ comment_form.as_p }}
-                    {% csrf_token %}
-                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                    <input type="submit" value="Reply">
-                </form>
-                <hr>
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        {% comment %} <p>Be the first to comment.</p> {% endcomment %}
-    {% endif %}
-
-    {% if request.user.is_authenticated %}
-        <form method="post">
-            {{ comment_form.as_p }}
-            {% csrf_token %}
-            <input type="submit" value="Comment">
-        </form>
-    {% else %}
-        <p>
-            You have to 
-            <a href="{% url 'account:login' %}">Login</a>
-            to comment.
-            <input type="hidden" name="next" value="{{ next }}">
-        </p>
-    {% endif %}
 {% endblock content %}

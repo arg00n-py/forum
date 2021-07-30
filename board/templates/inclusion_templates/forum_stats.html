@@ -1,0 +1,14 @@
+
+<i class="fa fa-user-o">
+    {{ users.count }} User{{ users.count|pluralize }}
+</i>
+
+<a href="{% url 'board:category_list' %}">
+    <i class="fa fa-folder-open-o" aria-hidden="true">
+        {{ categories.count }} Categor{{ categories|pluralize:'y,ies' }}
+    </i>
+</a>
+
+<i class="fa fa-comments-o" aria-hidden="true"> 
+    {{ posts.count }} Post{{ posts|pluralize }}
+</i>

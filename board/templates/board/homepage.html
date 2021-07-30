@@ -1,57 +1,326 @@
 {% extends 'base.html' %}
 
 
+{% load static %}
+
 
 {% block title %}
     Forum Homepage
 {% endblock title %}
     
-
+{% block styles %}
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+{% endblock styles %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <p>Hello, {{ user.username }}</p>
-        <p><a href="{% url 'account:dashboard' %}">Dashboard</a></p>
-    {% else %}
-        <p>Hello, Unknown</p>
-        <p><a href="{% url "account:login" %}">Login</a> to post and comment on posts.</p>
-        <p>Or <a href="{% url 'account:signup' %}">Signup</a></p>
-    {% endif %}
 
-    <h1>Welcome to this Forum</h1>
+    <!-- ======content section/body=====-->
+    <section class="main-content920">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div id="main">
 
-    {% if user.is_authenticated %}
-        <p><a href="{% url 'board:add_post' %}">Add Post</a></p>
-        {% if user.userprofile.is_admin %}
-            <p><a href="{% url 'board:add_category' %}">Add Category</a></p>
-        {% endif %}
-    {% endif %}
+                        {% if request.user.is_authenticated %}
+                            <input id="tab1" type="radio" name="tabs" checked>
+                            <label for="tab1">Recent Posts</label>
 
-    <h2>
-        <a href="{% url 'board:category_list' %}">
-            Categories
-        </a>
-    </h2>
-    
-    {% for category in categories %}
-        | <a href="{{ category.get_absolute_url }}">{{ category.title }}</a> |
-    {% endfor %}
+                            <input id="tab2" type="radio" name="tabs">
+                            <label for="tab2">Your Posts</label>
 
-    <h2>Latest Posts</h2>
+                            <input id="tab3" type="radio" name="tabs">
+                            <label for="tab3">Followed Posts</label>
 
-    <ul>
-        {% for post in latest_posts %}
-            <li>
-                <a href="{{ post.get_absolute_url }}">
-                    {{ post.title }} 
-                </a>
-                | {{ post.date_created.date }} | 
-                <a href="{{ post.category.get_absolute_url }}">
-                    {{ post.category }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+                        {% else %}
+
+                            <input id="tab1" type="radio" name="tabs" checked>
+                            <label for="tab1">Recent Posts</label>
+
+                            {% comment %} <input id="tab2" type="radio" name="tabs">
+                            <label for="tab2">Your Posts</label> {% endcomment %}
+
+                            {% comment %} <input id="tab3" type="radio" name="tabs">
+                            <label for="tab3">Followed Posts</label> {% endcomment %}
+                        
+                        {% endif %}
+
+
+                        <section id="content1">
+                            <!--Recent Question Content Section -->
+                            {% for post in latest_posts %}
+
+                                <div class="question-type2033">
+                                    <div class="row">
+                                        {% comment %} <div class="col-md-1">
+
+                                            <div class="left-user12923 left-user12923-repeat">
+                                                <a href="#"><img src="{% static 'image/images.png' %}" alt="image"> </a> 
+                                                {# <a href="#"><i class="fa fa-check" aria-hidden="true"></i></a> #}
+                                            </div>
+
+                                        </div> {% endcomment %}
+                                        <div class="col-md-12">
+                                            <div class="right-description893">
+
+                                                <div id="que-hedder2983">
+                                                    <h3>
+                                                        <a href="{{ post.get_absolute_url }}">
+                                                            {{ post.title|title }}
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                
+                                                <div class="ques-details10018">
+                                                    <p>
+                                                        {% comment %} {{ post.content|truncatewords:30 }} {% endcomment %}
+                                                        {% lorem 1 p random %}
+                                                    </p>
+                                                </div>
+
+                                                <hr>
+                                                
+                                                <div class="ques-icon-info3293">
+
+                                                    <a href="#">
+                                                        <i class="fa fa-user-o" aria-hidden="true">
+                                                            {{ post.user.username }}
+                                                            
+                                                            {% if post.user.userprofile.is_admin %}
+                                                                <span class="badge229">
+                                                                    admin
+                                                                </span>
+                                                            {% endif %}
+                                                        </i>
+                                                    </a> 
+
+                                                    <a href="{{ post.category.get_absolute_url }}">
+                                                        <i class="fa fa-folder-open-o" aria-hidden="true"> 
+                                                            {{ post.category }}
+                                                        </i>
+                                                    </a> 
+                                                    
+                                                    <span>
+                                                        <i class="fa fa-calendar-o" aria-hidden="true">
+                                                            {% comment %} {% now "DATE_FORMAT" as current_date %} {% endcomment %}
+                                                            {{ post.date_edited|date:"jS F Y H:i" }}
+                                                        </i>
+                                                    </span>
+
+                                                    <a href="#">
+                                                        <i class="fa fa-heart-o" aria-hidden="true">
+                                                            {% comment %} Implemet like functionality {% endcomment %}
+                                                        </i> 
+                                                    </a>
+
+                                                    <span>
+                                                        <i class="fa fa-comments-o">
+                                                            {{ post.comment_set.count }} Comment{{ post.comment_set.count|pluralize }}
+                                                        </i>
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>
+                                    There are no posts here.
+                                </p>
+                            {% endfor %}
+                        </section>
+
+                        <section id="content2">
+                            <!--All Posts Section -->
+                            {% for post in user_posts %}
+
+                                <div class="question-type2033">
+                                    <div class="row">
+                                        {% comment %} <div class="col-md-1">
+
+                                            <div class="left-user12923 left-user12923-repeat">
+                                                <a href="#"><img src="{% static 'image/images.png' %}" alt="image"> </a> 
+                                                {# <a href="#"><i class="fa fa-check" aria-hidden="true"></i></a> #}
+                                            </div>
+
+                                        </div> {% endcomment %}
+                                        <div class="col-md-12">
+                                            <div class="right-description893">
+
+                                                <div id="que-hedder2983">
+                                                    <h3>
+                                                        <a href="{{ post.get_absolute_url }}">
+                                                            {{ post.title|title }}
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                
+                                                <div class="ques-details10018">
+                                                    <p>
+                                                        {% comment %} {{ post.content|truncatewords:30 }} {% endcomment %}
+                                                        {% lorem 1 p random %}
+                                                    </p>
+                                                </div>
+
+                                                <hr>
+                                                
+                                                <div class="ques-icon-info3293">
+
+                                                    <a href="#">
+                                                        <i class="fa fa-user-o" aria-hidden="true">
+                                                            {{ post.user.username }}
+                                                            
+                                                            {% if post.user.userprofile.is_admin %}
+                                                                <span class="badge229">
+                                                                    admin
+                                                                </span>
+                                                            {% endif %}
+                                                        </i>
+                                                    </a> 
+
+                                                    <a href="{{ post.category.get_absolute_url }}">
+                                                        <i class="fa fa-folder-open-o" aria-hidden="true"> 
+                                                            {{ post.category }}
+                                                        </i>
+                                                    </a> 
+                                                    
+                                                    <span>
+                                                        <i class="fa fa-calendar-o" aria-hidden="true">
+                                                            {% comment %} {% now "DATE_FORMAT" as current_date %} {% endcomment %}
+                                                            {{ post.date_edited|date:"jS F Y H:i" }}
+                                                        </i>
+                                                    </span>
+
+                                                    <a href="#">
+                                                        <i class="fa fa-heart-o" aria-hidden="true">
+                                                            {% comment %} Implemet like functionality {% endcomment %}
+                                                        </i> 
+                                                    </a>
+
+                                                    <span>
+                                                        <i class="fa fa-comments-o">
+                                                            {{ post.comment_set.count }} Comment{{ post.comment_set.count|pluralize }}
+                                                        </i>
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>
+                                    There are no posts here.
+                                </p>
+
+                            {% endfor %}
+                        </section>
+
+                        <section id="content3">
+                            <!--All Posts Section -->
+                            {% for post in user_posts %}
+
+                                <div class="question-type2033">
+                                    <div class="row">
+                                        {% comment %} <div class="col-md-1">
+
+                                            <div class="left-user12923 left-user12923-repeat">
+                                                <a href="#"><img src="{% static 'image/images.png' %}" alt="image"> </a> 
+                                                {# <a href="#"><i class="fa fa-check" aria-hidden="true"></i></a> #}
+                                            </div>
+
+                                        </div> {% endcomment %}
+                                        <div class="col-md-12">
+                                            <div class="right-description893">
+
+                                                <div id="que-hedder2983">
+                                                    <h3>
+                                                        <a href="{{ post.get_absolute_url }}">
+                                                            {{ post.title|title }}
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                
+                                                <div class="ques-details10018">
+                                                    <p>
+                                                        {% comment %} {{ post.content|truncatewords:30 }} {% endcomment %}
+                                                        {% lorem 1 p random %}
+                                                    </p>
+                                                </div>
+
+                                                <hr>
+                                                
+                                                <div class="ques-icon-info3293">
+
+                                                    <a href="#">
+                                                        <i class="fa fa-user-o" aria-hidden="true">
+                                                            {{ post.user.username }}
+                                                            
+                                                            {% if post.user.userprofile.is_admin %}
+                                                                <span class="badge229">
+                                                                    admin
+                                                                </span>
+                                                            {% endif %}
+                                                        </i>
+                                                    </a> 
+
+                                                    <a href="{{ post.category.get_absolute_url }}">
+                                                        <i class="fa fa-folder-open-o" aria-hidden="true"> 
+                                                            {{ post.category }}
+                                                        </i>
+                                                    </a> 
+                                                    
+                                                    <span>
+                                                        <i class="fa fa-calendar-o" aria-hidden="true">
+                                                            {% comment %} {% now "DATE_FORMAT" as current_date %} {% endcomment %}
+                                                            {{ post.date_edited|date:"jS F Y H:i" }}
+                                                        </i>
+                                                    </span>
+
+                                                    <a href="#">
+                                                        <i class="fa fa-heart-o" aria-hidden="true">
+                                                            {% comment %} Implemet like functionality {% endcomment %}
+                                                        </i> 
+                                                    </a>
+
+                                                    <span>
+                                                        <i class="fa fa-comments-o">
+                                                            {{ post.comment_set.count }} Comment{{ post.comment_set.count|pluralize }}
+                                                        </i>
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>
+                                    There are no posts here.
+                                </p>
+
+                            {% endfor %}
+                        </section>
+
+                    </div>
+                </div>
+
+                {% include "side_bar.html" %}
+
+            </div>
+        </div>
+    </section>
+
+    {% block scripts %}
+        
+    {% endblock scripts %}
 
 {% endblock content %}
     

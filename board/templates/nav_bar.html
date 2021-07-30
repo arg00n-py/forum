@@ -1,0 +1,87 @@
+{% load static %}
+
+{% load custom_tags %}
+
+<div class="top-menu-bottom932">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle
+                        navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span> </button>
+
+                <a class="navbar-brand" href="{% url 'homepage' %}">Forum</a>
+
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav"> </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li><a href="{% url 'homepage' %}">Home</a></li>
+
+                    <li class="dropdown"> <a href="{% url 'board:category_list' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Post Categories<span class="caret"></span></a>
+
+                        <ul class="dropdown-menu animated zoomIn">
+                            {% show_category_list %}
+
+                            <li>
+                                <a href="{% url 'board:category_list' %}">
+                                    <small>
+                                        View all
+                                    </small>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+
+                    {% if user.is_authenticated %}
+
+                        <li>
+                            <a href="{% url 'board:add_post' %}">
+                                Post Something
+                            </a>
+                        </li>
+
+                        {% if request.user.userprofile.is_admin %}    
+                            <li>
+                                <a href="{% url 'board:add_category' %}">
+                                    Add Category
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <li>
+                            <a href="{% url 'account:dashboard' %}">
+                                Dashboard
+                            </a>
+                        </li>
+
+                        {% if request.user.userprofile.is_admin %}
+                            <li class="nav-admin-badge">
+                                {% if request.user.userprofile.is_admin %}
+                                    <span class="badge229">Admin</span>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+
+                    {% else %}
+                        <li>
+                            <a href="{% url "account:login" %}?next={{ request.path }}">Login</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'account:signup' %}?next={{ request.path }}">Signup</a>
+                        </li>
+                    {% endif %}
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+</div>

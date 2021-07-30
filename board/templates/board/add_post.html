@@ -1,18 +1,71 @@
 {% extends 'base.html' %}
 
+{% load static %}
 
 {% block title %}
-    Create Post
+Create Post
 {% endblock title %}
-    
+
+{% block styles %}
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/loginstyle.css' %}">
+{% endblock styles %}
 
 {% block content %}
-    <h1>Use the following form to add a post</h1>
+<section class="main-content920" style="margin-bottom: 10px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="ask-question-input-part032">
+                    <h4>Post Something</h4>
+                    <form method="post">
+                        <div class="question-title39">
+                            <span class="form-description43305">
+                                <label>{{ form.title.label }}</label>
+                            </span>
+                            {{ form.title }}
+                        </div>
 
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <input type="submit" value="Post">
-    </form>
+                        <div class="categori49">
+                            <span class="form-description43305">
+                                <label>{{ form.category.label }}</label>
+                            </span>
+                            {{ form.category }}
+                        </div>
+
+                        <div class="details2-239">
+                            <div class="form-description43305">
+                                <label>
+                                    {{ form.content.label }}
+                                </label>
+                            </div>
+                            {% comment %} <textarea id="txtEditor"></textarea> {% endcomment %}
+                            {{ form.content }}
+                        </div>
+
+                        {% csrf_token %}
+
+                        <div class="publish-button2389">
+                            <input type="submit" class="publis1291" value="Post">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% include 'side_bar.html' %}
+        </div>
+    </div>
+</section>
+
+{% block scripts %}
+    <script src="{% static "js/jquery-1.12.4.min.js" %}"></script>
+    <script src="{% static "js/jquery-2.2.4.min.js" %}"></script>
+    <script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/npm.js" %}"></script>
+{% endblock scripts %}
+
 {% endblock content %}
-    

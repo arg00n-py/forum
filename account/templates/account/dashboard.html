@@ -1,19 +1,106 @@
 {% extends 'base.html' %}
 
-
+{% load static %}
 
 {% block title %}
     Dashboard
 {% endblock title %}
+
+
+{% block styles %}
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+{% endblock styles %}
     
 
-
 {% block content %}
-    <h1>Welcome, {{ request.user.username }}</h1>
-    <p>Your bio: {{ request.user.userprofile.bio }}</p>
-    <p>Your date of birth: {{ request.user.userprofile.date_of_birth }}</p>
-    <p><a href="{% url 'account:logout' %}">Logout</a></p>
-    <p><a href="{% url 'account:edit_profile' %}">Edit profile</a></p>
-    <p><a href="{% url 'account:password_change' %}">Change Password</a></p>
-    <p>Go to <a href="{% url 'homepage' %}">Homepage</a></p>
+
+    <section class="main-content920">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="about-user2039 mt-70">
+                        <div class="user-title3930">
+                            <h3>
+                                Welcome, {{ request.user.username }}
+                            
+
+                                {% if request.user.userprofile.is_admin %}
+                                    <span class="badge229">
+                                        admin
+                                    </span>
+                                {% endif %}
+                            </h3>
+                            <hr>
+                        </div>
+                        
+                        <div class="user-description303">
+                            <p>
+                                {{ user.userprofile.bio }}
+                            </p>
+                            <hr>
+                        </div>
+
+                        <div>
+                            <a href="{% url 'homepage' %}">
+                                <button class="btn">Homepage</button>
+                            </a>
+                            <a href="{% url 'account:edit_profile' %}">
+                                <button class="btn">Edit Profile</button>
+                            </a>
+                            <a href="{% url 'account:password_change' %}">
+                                <button class="btn">Change Password</button>
+                            </a>
+                            <a href="{% url 'account:logout' %}">
+                                <button class="btn">Log out</button>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="user-statas921">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="ul_list_ul_list-icon-ok281">
+                                    <ul>
+                                        <li><a href="#">Questions ( 4 )</a></li>
+                                        <li><a href="#">Asked Questions ( 0 )</a></li>
+                                        <li><a href="#">Followed Questions ( 3 )</a></li>
+                                        <li><a href="#">Posts ( 10 )</a></li>
+                                        <li><a href="#">Points ( 208 )</a></li>
+                                        <li><a href="#">Followers ( 47 )</a></li>
+                                        <li><a href="#">Comments ( 1 )</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="ul_list_ul_list-icon-ok281">
+                                    <ul>
+                                        <li><a href="#">Questions ( 4 )</a></li>
+                                        <li><a href="#">Asked Questions ( 0 )</a></li>
+                                        <li><a href="#">Followed Questions ( 3 )</a></li>
+                                        <li><a href="#">Posts ( 10 )</a></li>
+                                        <li><a href="#">Points ( 208 )</a></li>
+                                        <li><a href="#">Followers ( 47 )</a></li>
+                                        <li><a href="#">Comments ( 1 )</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% include 'side_bar.html' %}
+            </div>
+        </div>
+    </section>
+
+
+{% block scripts %}
+
+{% endblock scripts %}
+    
+
 {% endblock content %}

@@ -1,4 +1,4 @@
 #TODO:
     -Put all account settings in 'settings' veiw
     -Make a 'Reset Password' view in account
-    -Add 'admin' automatically in 'add_category' view
+

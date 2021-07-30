@@ -1,0 +1,11 @@
+{% load custom_tags %}
+
+{{ context }}
+
+<form method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <div class="text-center">
+        <input class="button" type="submit" value="Log In">
+    </div>
+</form>

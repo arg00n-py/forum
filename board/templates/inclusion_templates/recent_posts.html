@@ -1,0 +1,18 @@
+{% for post in latest_posts %}
+
+    <div class="post-details021"> 
+        <a href="{{ post.get_absolute_url }}">
+            <h5>{{ post.title|title }}</h5>
+        </a>
+        
+        <p>
+            {{ post.content|truncatewords:10 }}
+        </p>
+        
+        <small style="color: #848991">
+            {{ post.date_created}}
+        </small>
+    </div>
+    <hr>
+
+{% endfor %}

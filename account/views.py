@@ -14,11 +14,18 @@ from .models import UserProfile
 @login_required()
 def dashboard(request):
     # user dashboard
-    return render(request, 'account/dashboard.html')
+    return render(request,
+                  'account/dashboard.html',
+                  {'section': 'dashboard'})
 
 
 def user_login(request):
     # user login
+
+    # get url of previous page if available
+    # or else use 'homepage'
+    redirect_url = request.GET.get('next', 'homepage')
+
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
 
@@ -33,7 +40,7 @@ def user_login(request):
                 if user.is_active:
                     login(request, user)
                     messages.success(request, "Login Successful")
-                    return redirect("homepage")
+                    return redirect(redirect_url)
                 else:
                     # return HttpResponse("User Disabled")
                     messages.error(request, "Account has been disabled.")
@@ -47,7 +54,10 @@ def user_login(request):
     else:
         form = UserLoginForm()
 
-    return render(request, 'account/login.html', {'form': form})
+    return render(request,
+                  'account/login.html',
+                  {'form': form,
+                   'section': 'user_login'})
 
 
 def user_logout(request):
@@ -58,6 +68,10 @@ def user_logout(request):
 
 
 def user_signup(request):
+    #
+    # get url of previous page if available
+    # or else redirect to 'homepage'
+    redirect_url = request.GET.get('next', 'homepage')
 
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
@@ -82,12 +96,15 @@ def user_signup(request):
 
             messages.success(request, "Account has been created successfully")
 
-            return redirect("account:dashboard")
+            return redirect(redirect_url)
 
     else:
         form = UserRegistrationForm()
 
-    return render(request, 'account/register.html', {'form': form})
+    return render(request,
+                  'account/register.html',
+                  {'form': form,
+                   'section': 'user_signup'})
 
 
 @login_required()
@@ -111,7 +128,10 @@ def edit_profile(request):
     else:
         form = UserProfileEditForm()
 
-    return render(request, 'account/edit_profile.html', {'form': form})
+    return render(request,
+                  'account/edit_profile.html',
+                  {'form': form,
+                   'section': 'edit_profile'})
 
 
 @login_required()
@@ -147,4 +167,7 @@ def password_change(request):
     else:
         form = PasswordChangeForm()
 
-    return render(request, 'account/password_change.html', {'form': form})
+    return render(request,
+                  'account/password_change.html',
+                  {'form': form,
+                   'section': 'password_change'})

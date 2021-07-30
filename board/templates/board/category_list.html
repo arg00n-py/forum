@@ -1,32 +1,81 @@
 {% extends 'base.html' %}
 
 
-{% block title %}Categories{% endblock title %}
+{% load static %}
 
+
+{% block title %}
+    Cateogry List
+{% endblock title %}
+    
+{% block styles %}
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css">
+    <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+{% endblock styles %}
 
 {% block content %}
-    <h1>Categories</h1>
 
-    <ul>
-        {% for category in categories %}
-            <li>
-                <p>
-                    <a href="{{ category.get_absolute_url }}">
-                        {{ category.title }}
-                    </a>
-                </p>
-                <p>{{ category.description }}</p>
-                <p>
-                    admins:
-                    {% for admin in category.admin.all %}
-                        {% if not forloop.last %}
-                            {{ admin.user.username }},
-                        {% else %}
-                            {{ admin.user.username }}.
-                        {% endif %}
-                    {% endfor %}
-                </p>
-            </li>
-        {% endfor %}
-    </ul>
+    <!-- ======content section/body=====-->
+    <section class="main-content920">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div id="main">
+                        <h1>Categories</h1>
+                        {% for category in categories %}
+                            <div class="question-type2033">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="right-description893">
+                                            <div id="que-hedder2983">
+                                                <h3>
+                                                    <a href="{{ category.get_absolute_url }}">
+                                                        {{ category.title }}
+                                                    </a>
+                                                </h3>
+                                            </div>
+                    
+                                            <div class="ques-details10018">
+                                                <p>
+                                                    {{ category.description }}
+                                                </p>
+                                            </div>
+                                            <hr>
+                                            <div class="ques-icon-info3293">
+                                                <i class="fa fa-users">
+                                                    admins:
+                                                    {% for admin in category.admin.all %}
+                                                        {% if not forloop.last %}
+                                                            {{ admin.user.username }},
+                                                        {% else %}
+                                                            {{ admin.user.username }}.
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </i>
+                                                <i class="fa fa-paper-plane-o">
+                                                    {{ category.post_set.all.count }} 
+                                                    Post{{ category.post_set.all.count|pluralize }}
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% include "side_bar.html" %}
+
+            </div>
+        </div>
+    </section>
+
+    {% block scripts %}
+        
+    {% endblock scripts %}
+
 {% endblock content %}

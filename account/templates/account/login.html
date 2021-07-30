@@ -1,18 +1,51 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+
+{% block styles %}
+	<link rel="stylesheet" href="{% static 'css/loginstyle.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+	<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+	{% endblock styles %}
+	
+
 {% block title %}Login{% endblock title %}
 
 
 {% block content %}
-    <h1>Login</h1>
 
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="login"></p>
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
+<div class="modal-wrap">
 
-    <p>Don't have an account? <a href="{% url 'account:signup' %}">Sign up</a></p>
+	<div class="modal-bodies">
+		<div class="modal-body modal-body-step-1 is-showing">
+			<div class="title">Log In</div>
+			<div class="description">Use the following form to login</div>
+			<form method="post">
+				{{ form.as_p }}
+				{% csrf_token %}
+				<div class="text-center">
+					<input type="hidden" name="next" value="{{ next }}">
+					<input class="button" type="submit" value="Log In">
+				</div>
+			</form>
+			<br>
+			<p class="text-center">
+				Don't have an account? <a href="{% url 'account:signup' %}">Sign up</a>
+			</p>
+			<p class="text-center">
+				<a href="{% url 'homepage' %}">Continue as anonymous user</a>
+			</p>
+		</div>
+
+
+	</div>
+</div>
+
+
+{% block scripts %}
+	
+{% endblock scripts %}
+	
+
 {% endblock content %}
-    

@@ -21,7 +21,8 @@ def category_list(request):
 
     return render(request,
                   'board/category_list.html',
-                  {'categories': categories})
+                  {'categories': categories,
+                   'section': 'category_list'})
 
 
 def category_detail(request, title):
@@ -31,18 +32,20 @@ def category_detail(request, title):
     return render(request,
                   'board/category_detail.html',
                   {'posts': posts,
-                   'category': category})
+                   'category': category,
+                   'section': 'category_detail'})
 
 
 def post_detail(request, category, id, title):
     post = get_object_or_404(Post, id=id)
-    comments = Comment.objects.all().filter(active=True, post=post, parent__isnull=True)
+    comments = Comment.objects.all().filter(
+        active=True, post=post, parent__isnull=True)
 
     new_comment = None
 
     if not post.approved:
         messages.error(request, "Post not found")
-        return redirect('board:homepage')
+        return redirect('homepage')
 
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)
@@ -78,7 +81,8 @@ def post_detail(request, category, id, title):
                   'board/post_detail.html',
                   {'post': post,
                    'comments': comments,
-                   'comment_form': comment_form})
+                   'comment_form': comment_form,
+                   'section': 'post_detail'})
 
 
 @login_required()
@@ -86,7 +90,7 @@ def add_category(request):
 
     if not request.user.userprofile.is_admin:
         messages.error(request, "Only admins can add categories.")
-        return redirect('board:homepage')
+        return redirect('homepage')
 
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -94,12 +98,15 @@ def add_category(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Category has been added.')
-            return redirect('board:homepage')
+            return redirect('homepage')
 
     else:
         form = CategoryForm()
 
-    return render(request, 'board/add_category.html', {'form': form})
+    return render(request,
+                  'board/add_category.html',
+                  {'form': form,
+                   'section': 'add_category'})
 
 
 @login_required()
@@ -117,19 +124,12 @@ def add_post(request):
 
             messages.success(request, f"'{post_title}' posted successfully.")
 
-            return redirect('board:homepage')
+            return redirect('homepage')
 
     else:
         form = PostForm()
 
-    return render(request, 'board/add_post.html', {'form': form})
-
-
-@login_required()
-def add_comment(request):
-    pass
-
-
-@login_required()
-def add_reply(request):
-    pass
+    return render(request,
+                  'board/add_post.html',
+                  {'form': form,
+                   'section': 'add_post'})
